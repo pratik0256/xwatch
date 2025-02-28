@@ -5,7 +5,6 @@ const Stopwatch = () => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
-  // Effect to handle timer logic
   useEffect(() => {
     let timer = null;
 
@@ -20,45 +19,29 @@ const Stopwatch = () => {
     };
   }, [isActive]);
 
-  // Log elapsed time for debugging
-  useEffect(() => {
-    console.log("Current Time:", elapsedTime);
-  }, [elapsedTime]);
-
-  // Start/Stop button handler
   const handleStartStop = () => {
     setIsActive((prevState) => !prevState);
   };
 
-  // Reset stopwatch
   const handleReset = () => {
     setIsActive(false);
     setElapsedTime(0);
   };
 
-  // Convert elapsed seconds into MM:SS format
-  const getFormattedTime = (elapsedTime) => {
-    const minutes = String(Math.floor(elapsedTime / 60)).padStart(2, "0");
-    const seconds = String(elapsedTime % 60).padStart(2, "0");
-    return `Time: ${minutes}:${seconds}`;
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
   return (
-    <div className="App">
-      <div className="stopwatch">
-        <h2>Stopwatch</h2>
-        <div className="time" data-testid="time-display">
-          {getFormattedTime(elapsedTime)}
-        </div>
-        <div className="buttons">
-          <button onClick={handleStartStop} data-testid="start-stop-button">
-            {isActive ? "Stop" : "Start"}
-          </button>
-          <button onClick={handleReset} data-testid="reset-button">
-            Reset
-          </button>
-        </div>
-      </div>
+    <div className="stopwatch-container">
+      <h2>Stopwatch</h2>
+      <p>Time: {formatTime(elapsedTime)}</p>
+      <button onClick={handleStartStop}>
+        {isActive ? "Stop" : "Start"}
+      </button>
+      <button onClick={handleReset}>Reset</button>
     </div>
   );
 };
